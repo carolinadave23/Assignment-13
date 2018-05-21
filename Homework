@@ -1,1 +1,66 @@
-Question and answer here
+ExitProcess 	proto
+WriteInt64  	proto
+Crlf		proto
+
+.data
+myArray QWORD 10,6,7,5,4,3,2,2,1
+
+.code
+main proc
+	mov r9, TYPE myArray
+
+	;print the array
+	mov rcx, LENGTHOF myArray
+	mov rsi, 0
+	PRINTLOOP1:
+		mov rax, rsi
+		mul r9
+		mov rax, myArray[rax]
+		call WriteInt64
+		inc rsi
+	LOOP PRINTLOOP1
+	call Crlf
+
+	mov rcx, LENGTHOF myArray
+	OUTERLOOP:
+		push rcx
+
+		;sort the array
+		mov rcx, LENGTHOF myArray - 1
+		mov rsi, 0
+	INNERLOOP:
+		mov rdx, rsi
+		inc rdx
+		mov r10, myArray[rsi * 8]
+		mov r11, myArray[rdx * 8]
+
+		cmp r10, r11
+		jle ENDLOOP
+
+			;SWAP
+			mov myArray[rsi * 8], r11
+			mov myArray[rdx * 8], r10
+
+		ENDLOOP:
+		inc rsi
+	LOOP INNERLOOP
+
+	;print the array
+	mov rcx, LENGTHOF myArray
+	mov rsi, 0
+	PRINTLOOP2:
+		mov rax, rsi
+		mul r9
+		mov rax, myArray[rax]
+		call WriteInt64
+		inc rsi
+	LOOP PRINTLOOP2
+	call Crlf
+
+	pop rcx
+	LOOP OUTERLOOP
+
+	call ExitProcess
+main endp
+end
+
