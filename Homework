@@ -1,5 +1,6 @@
 Assignment 13
-Bubble Sort Program
+	Given an array of 8-byte integers, sort the array using the Bubble Sort algorithm.
+	Your program should print the array before and after the sort takes place.
 
 
 ExitProcess 	proto
